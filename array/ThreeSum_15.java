@@ -2,6 +2,7 @@ import java.util.*;
 
 class ThreeSum_15 {
     public static List<List<Integer>> threeSum(int[] nums) {
+        Arrays.sort(nums);
     	List<List<Integer>> results = new ArrayList<>();
     	Map<Integer, Map<Integer, Integer>> outMap = new HashMap<>();
         long start=System.currentTimeMillis();
