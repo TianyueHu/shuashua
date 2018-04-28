@@ -16,16 +16,13 @@ class ThreeSumClosest_16{
         		if(Math.abs(tempResult - target) < Math.abs(result - target)){
         			result = tempResult;
         		}
-        		if(start < end && nums[start] + nums[end] < t) ++start;
-        		if(start < end && nums[start] + nums[end] > t) --end;
+        		if(nums[start] + nums[end] < t) ++start;
+        		if(nums[start] + nums[end] > t) --end;
         		
         	}
         }
         return result;
     }
 
-    public static void main(String[] args) {
-    	int[] nums = new int[]{0,2,1,-3};
-        System.out.println(ThreeSumClosest_16.threeSumClosest(nums, 1));
-    }
+    
 }

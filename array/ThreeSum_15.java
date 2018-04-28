@@ -3,31 +3,25 @@ import java.util.*;
 class ThreeSum_15 {
     public static List<List<Integer>> threeSum(int[] nums) {
         Arrays.sort(nums);
-    	List<List<Integer>> results = new ArrayList<>();
-    	Map<Integer, Map<Integer, Integer>> outMap = new HashMap<>();
+        int size = nums.length;
+        List<List<Integer>> results = new ArrayList<>();
+        Map<Integer, Map<Integer, Integer>> outMap = new HashMap<>();
+        
+        for(int i = 0; i < size; ++i){
+            for(int outkey : outMap.keySet()){
+                Map<Integer, Integer> innerMap = outMap.get(outkey);
+                if(innerMap.containsKey(nums[i]) && innerMap.get(nums[i]) == 0){
+                    results.add(new ArrayList<Integer>(Arrays.asList(0 - outkey, outkey - nums[i], nums[i])));
+                    innerMap.put(nums[i], 1);
+                }
+                if(!innerMap.containsKey(outkey - nums[i])){
+                    innerMap.put(outkey - nums[i], 0);
+                }
+            }
+            if(!outMap.containsKey(0 - nums[i]))
+                outMap.put(0 - nums[i], new HashMap<Integer,Integer>());
+        }
         long start=System.currentTimeMillis();
-    	for(int i = 0; i < nums.length; ++i){
-    		for(Integer outKey : outMap.keySet()){
-    			Map<Integer, Integer> innerMap = outMap.get(outKey);
-    			if(innerMap.containsKey(nums[i]) && innerMap.get(nums[i]) == 0){
-    				List<Integer> res = new ArrayList<>(Arrays.asList(
-                                            (0 - outKey), (outKey - nums[i]), nums[i]));
-    				
-    				results.add(res);
-    				innerMap.put(nums[i], 1);
-    			}
-
-    			if(!innerMap.containsKey(outKey - nums[i])){
-    				innerMap.put(outKey - nums[i], 0);
-    			}
-    			
-    		}
-    		if(!outMap.containsKey(0 - nums[i])){
-    			outMap.put((0 - nums[i]), new HashMap<Integer, Integer>());
-    		}
-    	}
-        long end=System.currentTimeMillis();
-        start=System.currentTimeMillis();
         results.sort(new Comparator<List<Integer>>(){
             @Override
             public int compare(List<Integer> o1, List<Integer> o2){
@@ -37,50 +31,35 @@ class ThreeSum_15 {
                     ) : (o1.get(0) - o2.get(0));
             }
         });
-        end=System.currentTimeMillis();
-    	return multiRemove(results);
-    }
-
-
-    private static List<List<Integer>> multiRemove(List<List<Integer>> lst){
-        List<Integer> pointer = null;
-        List<List<Integer>> results = new ArrayList<>();
-        if(null != lst){
-            for(List<Integer> l : lst){
-                if(null == pointer || !pointer.containsAll(l) || !l.containsAll(pointer)){
-                    results.add(l);
-                }
-                pointer = l;
-            }
-        }
+        long end = System.currentTimeMillis();
+        System.out.println("排序时间： "+(end-start)+"ms");
         return results;
     }
+
+
+    
 
     public static List<List<Integer>> threeSum_(int[] nums) {
         List<List<Integer>> results = new ArrayList<>();
+        int size = nums.length;
         Arrays.sort(nums);
-        for(int i = 0; i < nums.length - 2; ++i){
-            int target = 0 - nums[i], begin = i+1, end = nums.length-1;
-            while(begin < end){
-                
-                if(nums[begin] + nums[end] == target){
-                    results.add(new ArrayList<Integer>(Arrays.asList(nums[i], nums[begin], nums[end])));
-                    while(begin < end && nums[begin] == nums[begin + 1]) ++begin;
-                    while(begin < end && nums[end] == nums[end-1]) --end;
-                    ++begin;
-                    --end;
+        for(int i = 0; i < size - 2; ++i){
+            if(i != 0 && nums[i] == nums[i-1]) continue;
+            int start = i + 1, end = size - 1;
+            while(start < end){
+                int temp = nums[i] + nums[start] + nums[end];
+
+                if(temp == 0){
+                    results.add(new ArrayList<Integer>(Arrays.asList(nums[i], nums[start], nums[end])));
+                    while(start < end && nums[start] == nums[start+1]) ++start;
+                    while(start < end && nums[end] == nums[end-1]) --end;
+                    ++start;
                 }
-                else if(nums[begin] + nums[end] < target){
-                    ++begin;
-                }
-                else{
-                    --end;
-                }
+                else if(temp < 0) ++start;
+                else if(temp > 0) --end;
             }
-            while(i < nums.length - 3 && nums[i] == nums[i + 1]) ++i;
         }
         return results;
-
     }
 
     public static void main(String[] args){
@@ -110,21 +89,33 @@ class ThreeSum_15 {
 }
 
 /*
-输出结果
-输入为500
-程序运行时间： 5ms
-hashmap程序运行时间： 75ms
-输入为1000
-程序运行时间： 10ms
-hashmap程序运行时间： 214ms
-输入为2000
-程序运行时间： 29ms
-hashmap程序运行时间： 886ms
+java ThreeSum_15 500
+程序运行时间： 6ms
+排序时间： 2ms
+hashmap程序运行时间： 77ms
+
+ThreeSum_15 1000
+程序运行时间： 11ms
+排序时间： 5ms
+hashmap程序运行时间： 219ms
+
+java ThreeSum_15 5000
+程序运行时间： 128ms
+排序时间： 124ms
+hashmap程序运行时间： 8085ms
+
+java ThreeSum_15 10000
+程序运行时间： 2000ms
+Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded
+    at java.util.HashMap.newNode(HashMap.java:1747)
+    at java.util.HashMap.putVal(HashMap.java:631)
+    at java.util.HashMap.put(HashMap.java:612)
+    at ThreeSum_15.threeSum(ThreeSum_15.java:18)
+    at ThreeSum_15.main(ThreeSum_15.java:85)
 
 使用hashmap的时间简直呈指数级增长。
 在每个部分使用时间计数的方式发现在第一层map内的时间约为1ms，这样的时间是无法接受的。
 我能理解后面的方法更快，但是无法理解为什么使用hashmap的这种这么慢
-
 */
 
 
