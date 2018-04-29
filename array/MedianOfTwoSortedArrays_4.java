@@ -5,7 +5,7 @@ public class MedianOfTwoSortedArrays_4 {
     /*
     初始思路：两个数组分别用一个指针，类似归并排序的方法找到中位数的位置，然后将两个数组之和分为奇数和偶数进行处理
     */
-    public static double findMedianSortedArrays_1(int[] nums1, int[] nums2) {
+    public double findMedianSortedArrays_1(int[] nums1, int[] nums2) {
         double result = 0;
         int size = (nums1.length + nums2.length - 1) / 2;
         boolean even = ((nums1.length + nums2.length) % 2 == 0) ? true : false;
@@ -39,7 +39,7 @@ public class MedianOfTwoSortedArrays_4 {
     /*
     在开始进行判断，就不需要考虑哪一条更长的情况
      */
-    public static double findMedianSortedArrays_2(int[] nums1, int[] nums2){
+    public double findMedianSortedArrays_2(int[] nums1, int[] nums2){
         if(nums1.length > nums2.length){
             return findMedianSortedArrays_2(nums2, nums1);
         }
@@ -83,7 +83,7 @@ public class MedianOfTwoSortedArrays_4 {
 
     问题的关键在于，将集合划分为两个长度相等的子集
      */
-    public static double findMedianSortedArrays_3(int[] nums1, int[] nums2){
+    public double findMedianSortedArrays_3(int[] nums1, int[] nums2){
 
         if(nums1.length > nums2.length){
             return findMedianSortedArrays_3(nums2, nums1);
@@ -126,7 +126,7 @@ public class MedianOfTwoSortedArrays_4 {
     以上3种每次都需要区分奇偶
     上面一种还需要考虑各种边界条件
      */
-    public static double findMedianSortedArrays_4(int[] nums1, int[] nums2){
+    public double findMedianSortedArrays_4(int[] nums1, int[] nums2){
         if(nums1.length > nums2.length){
             return findMedianSortedArrays_4(nums2, nums1);
         }
@@ -152,10 +152,5 @@ public class MedianOfTwoSortedArrays_4 {
         return result;
     }
 
-    public static void main(String[] args) {
-        int[] nums1 = {10001};
-        int[] nums2 = {10000};
-        System.out.println(MedianOfTwoSortedArrays_4.findMedianSortedArrays_4(nums1,nums2));
-    }
 }
 

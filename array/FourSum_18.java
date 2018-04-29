@@ -2,7 +2,7 @@ import java.util.*;
 
 class FourSum_18{
 
-	public static List<List<Integer>> fourSum(int[] nums, int target){
+	public List<List<Integer>> fourSum(int[] nums, int target){
 		Arrays.sort(nums);
 		List<List<Integer>> result = new ArrayList<>();
 		int size = nums.length;
