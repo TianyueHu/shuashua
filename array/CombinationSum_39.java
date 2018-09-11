@@ -41,8 +41,7 @@ class CombinationSum_19{
     }
 
     private void backtrack(List<List<Integer>> lists, List<Integer> list, int[] nums, int target, int start){
-        if(target < 0) return;
-        else if(target == 0) lists.add(new ArrayList<>(list));
+        if(target == 0) lists.add(list);
         else {
             for(int i = start; i < nums.length; ++i){
                 if(nums[i] > target) break;
