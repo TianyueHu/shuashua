@@ -7,6 +7,6 @@ class MaximumSubarray_53{
         	curMax = Math.max(curMax + nums[i], nums[i]);
         	max = (max, curMax);
         }
-
+        return max;
     }
 }
