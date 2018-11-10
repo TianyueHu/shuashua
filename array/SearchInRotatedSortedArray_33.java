@@ -1,38 +1,32 @@
 import java.util.*;
 
 class SearchInRotatedSortedArray_33{
-	public static int search(int[] nums, int target) {
-        //错的！！！！！！！！！！！！！！！！！！！！！
-        int size = nums.length;
-        int low = 0, high = size - 1;
-        while(low < high){
-        	int mid = (low + high) / 2;
-        	if(nums[mid] == target) return mid;
-
-        	if(nums[mid] > target){
-        		if(nums[low] <= target){
-        			high = mid
-        		}
-        		else{
-        			low = mid + 1;
-        		}
-
-        	}
-        	else if(nums[mid] < target){
-        		if(nums[high] > target){
-        			low = mid + 1
-        		}
-        		else{
-        			high = mid;
-        		}
-        	}
+	public int search(int[] nums, int target) {
+        if(nums.length <= 0) return -1;
+        
+        int left = 0, right = nums.length - 1;
+        while(left <= right){
+            if(nums[left] == target) return left;
+            if(nums[right] == target) return right;
+            int mid = (left + right + 1) / 2;
+            if(nums[mid] == target) return mid;
+            if(nums[mid] > nums[left]){
+                if(nums[mid] > target && nums[left] < target){
+                    right = mid - 1;
+                }
+                else{
+                    left = mid + 1;
+                }
+            }
+            else{
+                if(nums[mid] < target && nums[right] > target){
+                    left = mid + 1;
+                }
+                else{
+                    right = mid - 1;
+                }
+            }
         }
         return -1;
-    }
-
-    public static void main(String args[]){
-    	int[] nums = new int[]{0,1,2,3,7,8,9,4,5,6};
-    	int result = SearchInRotatedSortedArray_33.search(nums,1);
-    	System.out.println(result);
     }
 }
