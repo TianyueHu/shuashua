@@ -1,31 +1,30 @@
 class MajorityElement2_229{
     public List<Integer> majorityElement(int[] nums) {
+        int[] candidates = {0, 0}, count = {0,0};
+        for(int i = 0; i < nums.length; ++i){
+            checkAndUpdate(candidates, count, nums[i]);
+        }
         List<Integer> lst = new ArrayList<Integer>();
-        int firIndex = nums.length / 3, secIndex = 2 * nums.length / 3;
-        
+        if(count[0] > 0) lst.add(candidates[0]);
+        if(count[1] > 0) lst.add(candidates[1]);
     }
-    public void search(List<Ingeter> lst, int start, int end, int firIndex, int secIndex){
-        if(start <= end){
-            int left = start, right = end;
-            int key = nums[left];
-            while(left < right){
-        	    while(nums[right] >= key && right > left) --right;
-        	    nums[left] = nums[right];
-        	    while(nums[left] < key && left < right) ++left;
-        	    nums[right] = nums[left];
-            }
-            nums[left] = key;
-            if(left == firIndex || left == secIndex) lst.add(key);
-            if(start == firIndex || start == secIndex) lst.add(key);
-            if(end == firIndex || end == secIndex) lst.add(key);
-            if(left < firIndex)
-        	    search(lst, left + 1, end - 1, firIndex, secIndex);
-            else if(left > secIndex)
-        	    search(lst, start + 1, left - 1, firIndex, secIndex);
-            else{
-        	    search(lst, start + 1, left - 1, firIndex, secIndex);
-        	    search(lst, left + 1, end - 1, firIndex, secIndex);
-            }
+    
+    public void checkAndUpdate(int[] candidates, int[] count, int num){
+        if(count[0] == 0){
+            candidates[0] = num;
+            count[0] = 1;
+        }
+        else if (count[1] == 0){
+            candidates[1] = num;
+            count[1] = 1;
+        }
+        else if (candidates[0] == num)
+            count[0] ++;
+        else if (candidates[1] == num)
+            count[1] ++;
+        else {
+            count[0] --;
+            count[1] --;
         }
     }
 }
